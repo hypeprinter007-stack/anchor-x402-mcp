@@ -1,0 +1,31 @@
+{
+  "name": "anchor-x402",
+  "version": "0.1.0",
+  "description": "Nine x402-paid agent utilities: anchor, screen, attest, decode/tx, resolve/name, price/token, decode/calldata, parse/datetime, intel/wallet. Pay-per-call USDC on Base mainnet.",
+  "homepage": "https://anchor-x402.com",
+  "license": "MIT",
+  "command": {
+    "stdio": {
+      "command": "npx",
+      "args": ["-y", "anchor-x402-mcp"],
+      "env": {
+        "ANCHOR_WALLET_PRIVATE_KEY": {
+          "description": "EVM private key (0x-prefixed hex). The wallet pays for x402 calls in USDC on Base mainnet. Fund with USDC before use.",
+          "secret": true,
+          "required": true
+        }
+      }
+    }
+  },
+  "tools": [
+    "anchor_hash",
+    "screen_wallet",
+    "attest_decision",
+    "decode_tx",
+    "resolve_name",
+    "token_price",
+    "decode_calldata",
+    "parse_datetime",
+    "intel_wallet"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "name": "anchor-x402-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for anchor-x402 — 9 x402-paid agent utilities (anchor, screen, attest, decode/tx, resolve/name, price/token, decode/calldata, parse/datetime, intel/wallet). Pay-per-call USDC via x402 on Base or Solana mainnet. No API keys.",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "anchor-x402-mcp": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "x402-fetch": "^0.4.0",
+    "viem": "^2.21.0"
+  },
+  "keywords": [
+    "mcp",
+    "x402",
+    "anchor",
+    "base",
+    "solana",
+    "ai-agents",
+    "claude",
+    "merkle",
+    "sanctions",
+    "ofac",
+    "ens",
+    "bonfida",
+    "coingecko",
+    "openchain",
+    "decode",
+    "blockchain",
+    "stablecoin",
+    "usdc"
+  ],
+  "license": "MIT",
+  "author": "Christopher Ferjo <hello@anchor-x402.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hypeprinter007-stack/anchor-x402-mcp"
+  },
+  "homepage": "https://anchor-x402.com",
+  "bugs": {
+    "url": "https://github.com/hypeprinter007-stack/anchor-x402-mcp/issues"
+  },
+  "mcpName": "io.github.hypeprinter007-stack/anchor-x402"
+}
