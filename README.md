@@ -58,9 +58,79 @@ Add to your project's `.mcp.json`:
 }
 ```
 
-### Cursor / Continue / generic MCP client
+### Codex CLI (OpenAI)
+
+Edit `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.anchor-x402]
+command = "npx"
+args = ["-y", "anchor-x402-mcp"]
+
+[mcp_servers.anchor-x402.env]
+ANCHOR_WALLET_PRIVATE_KEY = "0xYOUR_BASE_WALLET_PRIVATE_KEY"
+```
+
+Restart `codex`. Type `/mcp` to confirm anchor-x402 shows in the loaded servers list.
+
+### ChatGPT Desktop
+
+Settings → **Integrations** → **MCP servers** → **Add server**. Paste:
+
+```json
+{
+  "command": "npx",
+  "args": ["-y", "anchor-x402-mcp"],
+  "env": {
+    "ANCHOR_WALLET_PRIVATE_KEY": "0xYOUR_BASE_WALLET_PRIVATE_KEY"
+  }
+}
+```
+
+Save, restart, the 9 tools appear in any chat with tool-use enabled.
+
+### Cursor
+
+Edit `~/.cursor/mcp.json` (global) or `<project>/.cursor/mcp.json` (project-scoped):
+
+```json
+{
+  "mcpServers": {
+    "anchor-x402": {
+      "command": "npx",
+      "args": ["-y", "anchor-x402-mcp"],
+      "env": {
+        "ANCHOR_WALLET_PRIVATE_KEY": "0xYOUR_BASE_WALLET_PRIVATE_KEY"
+      }
+    }
+  }
+}
+```
+
+### OpenAI Agents SDK (programmatic)
+
+```python
+from openai_agents import Agent, MCPServerStdio
+
+mcp = MCPServerStdio(
+    command="npx",
+    args=["-y", "anchor-x402-mcp"],
+    env={"ANCHOR_WALLET_PRIVATE_KEY": "0xYOUR_BASE_WALLET_PRIVATE_KEY"},
+)
+agent = Agent(name="researcher", model="gpt-4o", mcp_servers=[mcp])
+```
+
+Same package, same env, programmatic instead of config-driven.
+
+### Continue / Smithery / generic MCP client
 
 Same shape — `command: npx`, `args: [-y, anchor-x402-mcp]`, env carries your wallet key. The MCP SDK handles transport.
+
+Or install via [Smithery](https://smithery.ai) one-liner:
+```
+npx -y @smithery/cli install anchor-x402-mcp --client claude
+```
+(replace `--client claude` with `cursor`, `codex`, `windsurf`, etc.)
 
 ### Run standalone
 

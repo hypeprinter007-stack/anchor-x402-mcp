@@ -1,6 +1,6 @@
 {
   "name": "anchor-x402-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MCP server for anchor-x402 — 9 x402-paid agent utilities (anchor, screen, attest, decode/tx, resolve/name, price/token, decode/calldata, parse/datetime, intel/wallet). Pay-per-call USDC via x402 on Base or Solana mainnet. No API keys.",
   "main": "index.js",
   "type": "module",
