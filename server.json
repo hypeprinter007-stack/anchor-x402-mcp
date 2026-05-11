@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.hypeprinter007-stack/anchor-x402",
-  "description": "14-tool x402-paid MCP server on Base + Solana mainnet — 9 commodity primitives (anchor, screen, attest, decode/tx, resolve/name, price/token, decode/calldata, parse/datetime, intel/wallet) plus 5 universal LLM endpoints (roast, oracle, tldr, aura, grade). Pay-per-call USDC, no API keys.",
+  "description": "14-tool x402 MCP: 9 onchain primitives + 5 LLM endpoints. USDC pay-per-call on Base or Solana.",
   "websiteUrl": "https://anchor-x402.com",
   "repository": {
     "url": "https://github.com/hypeprinter007-stack/anchor-x402-mcp",
