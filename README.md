@@ -1,10 +1,12 @@
 # anchor-x402-mcp
 
-> MCP server exposing all 9 [anchor-x402](https://anchor-x402.com) services as tools any Claude Desktop / Cursor / Codex / Continue agent can call. Pay-per-use USDC via x402 on Base mainnet — no API keys, no subscriptions.
+> MCP server exposing 14 [anchor-x402](https://anchor-x402.com) services as tools any Claude Desktop / Cursor / Codex / Continue agent can call. Pay-per-use USDC via x402 on Base mainnet — no API keys, no subscriptions.
 
 ## What an agent gets
 
-Nine tools, $0.001–$0.010 per call:
+Fourteen tools, $0.001–$0.05 per call.
+
+**Commodity primitives** (9, $0.001–$0.010):
 
 | Tool | Price | What it does |
 |---|---|---|
@@ -17,6 +19,18 @@ Nine tools, $0.001–$0.010 per call:
 | `decode_calldata` | $0.001 | 4byte selector + ABI param decode for raw EVM calldata |
 | `parse_datetime` | $0.001 | Freeform datetime string → structured ISO 8601 |
 | `intel_wallet` | $0.005 | Bundled wallet intelligence: balances + activity + identity + sanctions in one call |
+
+**Universal LLM endpoints** (5, $0.01–$0.05) — added in v0.2:
+
+| Tool | Price | What it does |
+|---|---|---|
+| `roast` | $0.05 | Witty 3-5 paragraph roast of any target — wallet, tweet, code, idea, anything |
+| `oracle` | $0.05 | Yes/no oracle. Returns YES/NO/MAYBE + reason + dual-chain anchored `(question \| answer \| timestamp)` hash. Cryptographic receipt of when you asked. |
+| `tldr` | $0.01 | Summarize a URL (fetches up to 500KB) or pasted text into 3-5 concise bullets |
+| `aura` | $0.01 | Returns color, tier (S/A/B/C/D/F), score 0-9999, and a punchy 2-3 sentence aura read |
+| `grade` | $0.01 | Academic letter grade (A+ to F) with red-pen marginalia and one-paragraph summary |
+
+The investigator (`/v1/investigate`, $7.77 async) and the hosted chatbot at [chat.anchor-x402.com](https://chat.anchor-x402.com) are not included in the MCP — they're accessed directly via the HTTP API and the browser respectively.
 
 The MCP server pays for itself — your wallet gets debited automatically for each call. No prepay, no API key, no account.
 

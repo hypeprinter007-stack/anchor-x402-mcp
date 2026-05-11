@@ -1,7 +1,7 @@
 {
   "name": "anchor-x402-mcp",
-  "version": "0.1.2",
-  "description": "MCP server for anchor-x402 — 9 x402-paid agent utilities (anchor, screen, attest, decode/tx, resolve/name, price/token, decode/calldata, parse/datetime, intel/wallet). Pay-per-call USDC via x402 on Base or Solana mainnet. No API keys.",
+  "version": "0.2.0",
+  "description": "MCP server for anchor-x402 — 14 x402-paid agent utilities on Base + Solana. 9 commodity primitives (anchor, screen, attest, decode/tx, resolve/name, price/token, decode/calldata, parse/datetime, intel/wallet) plus 5 universal LLM endpoints (roast, oracle with anchored verdict, tldr, aura, grade). Pay-per-call USDC via x402, no API keys, no accounts.",
   "main": "index.js",
   "type": "module",
   "bin": {
@@ -33,7 +33,14 @@
     "decode",
     "blockchain",
     "stablecoin",
-    "usdc"
+    "usdc",
+    "roast",
+    "aura",
+    "oracle",
+    "tldr",
+    "grade",
+    "llm",
+    "agent-tools"
   ],
   "license": "MIT",
   "author": "Christopher Ferjo <hello@anchor-x402.com>",

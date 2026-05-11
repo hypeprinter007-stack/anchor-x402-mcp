@@ -61,7 +61,7 @@ if (PRIVATE_KEY) {
 }
 
 const server = new Server(
-  { name: "anchor-x402", version: "0.1.0" },
+  { name: "anchor-x402", version: "0.2.0" },
   { capabilities: { tools: {} } }
 );
 
@@ -197,6 +197,66 @@ const TOOLS = [
       required: ["wallet"],
     },
   },
+  {
+    name: "roast",
+    description:
+      "Witty, observational roast of any target — a wallet address, tweet, code snippet, startup idea, person, meme, anything. Returns a 3-5 paragraph LLM roast and a one-sentence neutral summary of the target. Clever, not mean-spirited. Use for entertainment, demo content, social. $0.05 USDC.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        target: { type: "string", description: "Anything to roast — free text up to 8000 chars." },
+      },
+      required: ["target"],
+    },
+  },
+  {
+    name: "oracle",
+    description:
+      "Yes/no oracle with dual-chain anchored verdict. LLM answers YES / NO / MAYBE with one-sentence reason, then anchors sha256(question|answer|timestamp) to Base + Solana mainnet so anyone can prove the question was asked at a specific time. Use for prediction-market commits, conditional contracts, time-stamped opinions, settling bets. $0.05 USDC.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        question: { type: "string", description: "A yes/no question (max 1000 chars)." },
+      },
+      required: ["question"],
+    },
+  },
+  {
+    name: "tldr",
+    description:
+      "Summarize a URL or pasted text into 3-5 concise bullets. Fetches up to 500KB on the URL path, strips HTML with BeautifulSoup. Use for research distillation, link-rot insurance, agent reading lists. Exactly one of `text` or `url`. $0.01 USDC.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        text: { type: "string", description: "Pasted text to summarize. Omit if providing `url`." },
+        url: { type: "string", description: "URL to fetch + summarize. Omit if providing `text`." },
+      },
+    },
+  },
+  {
+    name: "aura",
+    description:
+      "Aura read of any target — returns color (free-form e.g. 'molten gold with copper veins'), tier (S/A/B/C/D/F), score (0-9999), and a 2-3 sentence punchy description. Universal input — wallet, tweet, project, person, idea, meme. Use for viral / shareable content, brand vibes, social. $0.01 USDC.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        target: { type: "string", description: "Anything to read the aura of (max 4000 chars)." },
+      },
+      required: ["target"],
+    },
+  },
+  {
+    name: "grade",
+    description:
+      "Academic letter grade (A+ to F) with 3-7 red-pen marginalia one-liners and a one-paragraph teacher summary. Universal input — code, pitch deck, tweet, wallet, idea. Use for sharp feedback at low cost, prompt engineering eval, pre-investment screen. $0.01 USDC.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        target: { type: "string", description: "Anything to grade (max 6000 chars)." },
+      },
+      required: ["target"],
+    },
+  },
 ];
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
@@ -293,6 +353,55 @@ function buildRequest(name, args) {
       return {
         url: `${BASE_URL}/v1/intel/wallet?${new URLSearchParams({ wallet: args.wallet })}`,
         opts: { method: "GET" },
+      };
+    case "roast":
+      return {
+        url: `${BASE_URL}/v1/roast`,
+        opts: {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ target: String(args.target).slice(0, 8000) }),
+        },
+      };
+    case "oracle":
+      return {
+        url: `${BASE_URL}/v1/oracle`,
+        opts: {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: String(args.question).slice(0, 1000) }),
+        },
+      };
+    case "tldr": {
+      const body = {};
+      if (args.text != null) body.text = String(args.text).slice(0, 200000);
+      if (args.url != null) body.url = String(args.url).slice(0, 2048);
+      return {
+        url: `${BASE_URL}/v1/tldr`,
+        opts: {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        },
+      };
+    }
+    case "aura":
+      return {
+        url: `${BASE_URL}/v1/aura`,
+        opts: {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ target: String(args.target).slice(0, 4000) }),
+        },
+      };
+    case "grade":
+      return {
+        url: `${BASE_URL}/v1/grade`,
+        opts: {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ target: String(args.target).slice(0, 6000) }),
+        },
       };
     default:
       throw new Error(`Unknown tool: ${name}`);

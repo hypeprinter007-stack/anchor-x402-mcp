@@ -1,0 +1,31 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.hypeprinter007-stack/anchor-x402",
+  "description": "9-tool x402-paid MCP server on Base + Solana mainnet. Pay-per-call USDC, no API keys.",
+  "websiteUrl": "https://anchor-x402.com",
+  "repository": {
+    "url": "https://github.com/hypeprinter007-stack/anchor-x402-mcp",
+    "source": "github"
+  },
+  "version": "0.1.2",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "anchor-x402-mcp",
+      "version": "0.1.2",
+      "runtimeHint": "npx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "ANCHOR_WALLET_PRIVATE_KEY",
+          "description": "EVM private key (0x-prefixed hex). The wallet pays for x402 calls in USDC on Base mainnet. Fund with USDC before use.",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
