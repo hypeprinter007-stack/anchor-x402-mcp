@@ -27,7 +27,8 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { wrapFetchWithPayment } from "x402-fetch";
+import { wrapFetchWithPaymentFromConfig } from "@x402/fetch";
+import { ExactEvmScheme } from "@x402/evm";
 import { privateKeyToAccount } from "viem/accounts";
 
 const BASE_URL = process.env.ANCHOR_API_URL || "https://api.anchor-x402.com";
@@ -44,7 +45,9 @@ if (PRIVATE_KEY) {
     const account = privateKeyToAccount(
       PRIVATE_KEY.startsWith("0x") ? PRIVATE_KEY : `0x${PRIVATE_KEY}`
     );
-    paidFetch = wrapFetchWithPayment(fetch, account);
+    paidFetch = wrapFetchWithPaymentFromConfig(fetch, {
+      schemes: [{ network: "eip155:8453", client: new ExactEvmScheme(account) }],
+    });
     paymentEnabled = true;
     console.error(
       `anchor-x402-mcp: payment enabled, payer=${account.address}`
@@ -61,7 +64,7 @@ if (PRIVATE_KEY) {
 }
 
 const server = new Server(
-  { name: "anchor-x402", version: "0.2.0" },
+  { name: "anchor-x402", version: "0.2.1" },
   { capabilities: { tools: {} } }
 );
 
