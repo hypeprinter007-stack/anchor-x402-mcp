@@ -30,7 +30,7 @@ Fourteen tools, $0.001–$0.05 per call.
 | `aura` | $0.01 | Returns color, tier (S/A/B/C/D/F), score 0-9999, and a punchy 2-3 sentence aura read |
 | `grade` | $0.01 | Academic letter grade (A+ to F) with red-pen marginalia and one-paragraph summary |
 
-The investigator (`/v1/investigate`, $7.77 async) and the hosted chatbot at [chat.anchor-x402.com](https://chat.anchor-x402.com) are not included in the MCP — they're accessed directly via the HTTP API and the browser respectively.
+The investigator (`/v1/investigate`, $1.77 async) and the hosted chatbot at [chat.anchor-x402.com](https://chat.anchor-x402.com) are not included in the MCP — they're accessed directly via the HTTP API and the browser respectively.
 
 The MCP server pays for itself — your wallet gets debited automatically for each call. No prepay, no API key, no account.
 
