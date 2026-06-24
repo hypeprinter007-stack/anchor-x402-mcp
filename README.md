@@ -101,7 +101,7 @@ Settings → **Integrations** → **MCP servers** → **Add server**. Paste:
 }
 ```
 
-Save, restart, the 9 tools appear in any chat with tool-use enabled.
+Save, restart, the 14 tools appear in any chat with tool-use enabled.
 
 ### Cursor
 
