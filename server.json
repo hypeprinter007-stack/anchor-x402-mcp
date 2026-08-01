@@ -1,19 +1,19 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.hypeprinter007-stack/anchor-x402",
-  "description": "14-tool x402 MCP: 9 onchain primitives + 5 LLM endpoints. USDC pay-per-call on Base or Solana.",
+  "description": "x402-paid agent tools: 18 over HTTP, 14 over stdio. USDC per call, no API key.",
   "websiteUrl": "https://anchor-x402.com",
   "repository": {
     "url": "https://github.com/hypeprinter007-stack/anchor-x402-mcp",
     "source": "github"
   },
-  "version": "0.2.0",
+  "version": "0.3.0",
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "anchor-x402-mcp",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "runtimeHint": "npx",
       "transport": {
         "type": "stdio"
@@ -26,6 +26,12 @@
           "isSecret": true
         }
       ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://api.anchor-x402.com/mcp"
     }
   ]
 }

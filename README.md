@@ -2,6 +2,41 @@
 
 > MCP server exposing 14 [anchor-x402](https://anchor-x402.com) services as tools any Claude Desktop / Cursor / Codex / Continue agent can call. Pay-per-use USDC via x402 on Base mainnet — no API keys, no subscriptions.
 
+## Two transports — pick by who holds the wallet key
+
+**This package (stdio)** needs a funded EVM private key in the local process (`ANCHOR_WALLET_PRIVATE_KEY`) and pays for each call on your behalf. Convenient, but you are handing a hot key to a process.
+
+**Streamable HTTP** — `POST https://api.anchor-x402.com/mcp` — needs no install and no key handover. It exposes all **18** services (four more than this package: `roll_random`, `investigate_wallet`, `ledger_summary`, `ledger_report`), and you pay per call with a `PAYMENT-SIGNATURE` header, so your key never leaves your side.
+
+```json
+{
+  "mcpServers": {
+    "anchor-x402": { "url": "https://api.anchor-x402.com/mcp" }
+  }
+}
+```
+
+Clients that speak remote MCP natively take the `url` form above. For one that only launches stdio processes, bridge it:
+
+```json
+{
+  "mcpServers": {
+    "anchor-x402": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://api.anchor-x402.com/mcp"]
+    }
+  }
+}
+```
+
+Protocol revisions supported: `2026-07-28`, `2025-11-25`, `2025-06-18`, `2025-03-26` — both the stateless era and the `initialize` handshake era, on one endpoint. `server/discover` and `tools/list` are free; `tools/call` is paid.
+
+Payment is the ordinary x402 dance, surfaced inside MCP rather than around it: an unpaid `tools/call` returns a **result** (not a JSON-RPC error) with `isError: true` and the challenge in `structuredContent.accepts`, plus the canonical `payment-required` header. Sign one of the options and retry the identical call with `PAYMENT-SIGNATURE`. The challenge comes back as a result on purpose — an agent can read it and pay, whereas a JSON-RPC error would be swallowed by the client before the model ever saw it.
+
+Server card: [`/.well-known/mcp/server-card.json`](https://anchor-x402.com/.well-known/mcp/server-card.json). A worked client, including the adapter that bridges a stock x402 fetch wrapper to the MCP result shape, is in [`examples/agent/mcp-paid-call.mjs`](https://github.com/hypeprinter007-stack/anchor-x402/blob/main/examples/agent/mcp-paid-call.mjs).
+
+The rest of this README covers the stdio package.
+
 ## What an agent gets
 
 Fourteen tools, $0.001–$0.05 per call.
@@ -210,6 +245,8 @@ Network or DNS issue. Check `https://api.anchor-x402.com/health` returns 200; if
 ## Links
 
 - **Live API:** https://api.anchor-x402.com
+- **MCP over HTTP:** https://api.anchor-x402.com/mcp — all 18 tools, no key handover
+- **MCP server card:** https://anchor-x402.com/.well-known/mcp/server-card.json
 - **Site / trust portal:** https://anchor-x402.com
 - **Status:** https://anchor-x402.betteruptime.com
 - **Server source:** https://github.com/hypeprinter007-stack/anchor-x402

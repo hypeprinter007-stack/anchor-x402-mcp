@@ -1,13 +1,16 @@
 {
   "name": "anchor-x402",
-  "version": "0.1.0",
-  "description": "Nine x402-paid agent utilities: anchor, screen, attest, decode/tx, resolve/name, price/token, decode/calldata, parse/datetime, intel/wallet. Pay-per-call USDC on Base mainnet.",
+  "version": "0.3.0",
+  "description": "Eighteen x402-paid services for AI agents. This stdio package exposes 14 as tools and needs a funded EVM key in the local process; the streamable-http endpoint at https://api.anchor-x402.com/mcp exposes all 18 and takes payment per call instead, so the client keeps its own key. Pay-per-call USDC on Base or Solana mainnet, no API keys.",
   "homepage": "https://anchor-x402.com",
   "license": "MIT",
   "command": {
     "stdio": {
       "command": "npx",
-      "args": ["-y", "anchor-x402-mcp"],
+      "args": [
+        "-y",
+        "anchor-x402-mcp"
+      ],
       "env": {
         "ANCHOR_WALLET_PRIVATE_KEY": {
           "description": "EVM private key (0x-prefixed hex). The wallet pays for x402 calls in USDC on Base mainnet. Fund with USDC before use.",
@@ -26,6 +29,11 @@
     "token_price",
     "decode_calldata",
     "parse_datetime",
-    "intel_wallet"
+    "intel_wallet",
+    "roast",
+    "oracle",
+    "tldr",
+    "aura",
+    "grade"
   ]
 }
