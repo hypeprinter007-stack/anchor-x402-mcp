@@ -41,13 +41,13 @@ The rest of this README covers the stdio package.
 
 Fourteen tools, $0.001–$0.05 per call.
 
-**Commodity primitives** (9, $0.001–$0.010):
+**Commodity primitives** (9, $0.001–$0.02):
 
 | Tool | Price | What it does |
 |---|---|---|
 | `anchor_hash` | $0.005 | Anchor any 32-byte hash to Base + Solana mainnet in parallel; returns both tx URLs |
-| `screen_wallet` | $0.001 | OFAC SDN sanctions screening for any EVM or Solana wallet |
-| `attest_decision` | $0.010 | Verify a wallet signature over (input_hash, output_hash, decision); dual-chain anchor the result |
+| `screen_wallet` | $0.02 | Wallet risk pre-flight — OFAC sanctions + address-reputation (drainer/phishing/mixer) → allow/review/block |
+| `attest_decision` | $0.010 | Attest a decision — sign it yourself or let the treasury sign — then dual-chain anchor; free re-verify at /v1/attest/verify |
 | `decode_tx` | $0.001 | Structured decode of any mainnet tx (Base / Ethereum / Solana) |
 | `resolve_name` | $0.001 | Cross-chain name resolution (ENS, Bonfida SNS) |
 | `token_price` | $0.001 | USD spot price for any token by symbol or chain+contract |

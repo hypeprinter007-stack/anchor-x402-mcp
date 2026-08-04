@@ -17,7 +17,7 @@
  *     }
  *   }
  *
- * The wallet pays $0.001–$0.010 USDC per call automatically via x402. If
+ * The wallet pays $0.001–$0.05 USDC per call automatically via x402. If
  * ANCHOR_WALLET_PRIVATE_KEY is unset, tool calls return a helpful 402
  * message explaining how to fund + retry.
  */
@@ -93,7 +93,7 @@ const TOOLS = [
   {
     name: "screen_wallet",
     description:
-      "Sanctions + AML screening for any EVM or Solana wallet address. Returns sanctions match (boolean), specific OFAC SDN programs flagged (Tornado Cash, Lazarus Group, Hydra Market, Garantex, Blender.io etc.), inferred chain, and a low/medium/high risk verdict. Use for AML pre-flight checks before any treasury transfer, KYC onboarding, vendor diligence, payroll wallet verification, marketplace counterparty checks. $0.001 USDC.",
+      "Wallet risk pre-flight for agent payments. OFAC SDN sanctions (Tornado Cash, Lazarus Group, Hydra Market, Blender.io, etc.) plus address-reputation (drainer, phishing, mixer, laundering) from GoPlus, resolved to an allow/review/block recommendation with a 0-100 risk score and per-signal detail. Use before any treasury transfer, KYC onboarding, vendor diligence, or marketplace counterparty check. $0.02 USDC.",
     inputSchema: {
       type: "object",
       properties: {
@@ -108,18 +108,18 @@ const TOOLS = [
   {
     name: "attest_decision",
     description:
-      "Verify a wallet signature over (input_hash, output_hash, decision) with domain separation, then dual-chain anchor the resulting Merkle root on Base and Solana mainnet. Returns the verified signer plus on-chain proof URLs. Use when an AI agent's decision needs a cryptographic, auditable receipt — autonomous trade approvals, AI-assisted contract decisions, model-output attestation for liability records. $0.010 USDC.",
+      "Attest an agent decision over (input_hash, output_hash, decision) with domain separation: supply your own wallet signature, or omit `signature`/`scheme` and the anchor-x402 treasury signs for you (ideal for wallet-less agents) — then dual-chain anchor the Merkle root on Base and Solana mainnet. Returns the signer, on-chain proof URLs, and a free re-verify URL (POST /v1/attest/verify). Use when an AI agent's decision needs a cryptographic, auditable receipt — autonomous trade approvals, AI-assisted contract decisions, model-output attestation for liability records. $0.010 USDC.",
     inputSchema: {
       type: "object",
       properties: {
         input_hash: { type: "string", description: "64-char hex SHA-256 of the agent's input." },
         output_hash: { type: "string", description: "64-char hex SHA-256 of the agent's output / decision payload." },
         decision: { type: "string", description: 'Free-form short label, e.g. "APPROVED", "REJECTED", "CONFIDENCE=0.93" (max 64 chars).' },
-        scheme: { type: "string", enum: ["eip191", "ed25519"], description: "Signature scheme." },
-        signature: { type: "string", description: "0x-prefixed hex (eip191) or base58 (ed25519)." },
+        scheme: { type: "string", enum: ["eip191", "ed25519"], description: "Signature scheme (required only when you supply a signature)." },
+        signature: { type: "string", description: "0x-prefixed hex (eip191) or base58 (ed25519). Omit to have the anchor-x402 treasury sign for you." },
         signer_pubkey: { type: "string", description: "Required for ed25519 (Solana base58 pubkey)." },
       },
-      required: ["input_hash", "output_hash", "decision", "scheme", "signature"],
+      required: ["input_hash", "output_hash", "decision"],
     },
   },
   {
@@ -430,7 +430,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const body = await res.text().catch(() => "");
       const msg = paymentEnabled
         ? `Payment failed (402). The wallet may be out of USDC on Base, or the x402 facilitator rejected the payload.\n\nResponse body: ${body.slice(0, 300)}`
-        : `Payment required (402). Set ANCHOR_WALLET_PRIVATE_KEY in your MCP config so this server can pay automatically:\n\n  "env": {\n    "ANCHOR_WALLET_PRIVATE_KEY": "0xYOUR_BASE_WALLET_PRIVATE_KEY"\n  }\n\nFund the wallet with USDC on Base (any amount > $0.05 is plenty). The wallet pays $0.001–$0.010 per call.\n\nResponse body: ${body.slice(0, 300)}`;
+        : `Payment required (402). Set ANCHOR_WALLET_PRIVATE_KEY in your MCP config so this server can pay automatically:\n\n  "env": {\n    "ANCHOR_WALLET_PRIVATE_KEY": "0xYOUR_BASE_WALLET_PRIVATE_KEY"\n  }\n\nFund the wallet with USDC on Base (any amount > $0.10 is plenty for commodity calls). The wallet pays $0.001–$0.05 per call.\n\nResponse body: ${body.slice(0, 300)}`;
       return { content: [{ type: "text", text: msg }], isError: true };
     }
 

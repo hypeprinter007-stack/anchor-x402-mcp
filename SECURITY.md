@@ -34,7 +34,7 @@ It signs USDC payment authorizations to **anchor-x402's known treasury addresses
 3. Signs an EIP-3009 USDC `transferWithAuthorization` for the requested amount, to that treasury address
 4. Retries with the signed payment in the `X-PAYMENT` header
 
-The wallet **cannot** be drained to arbitrary addresses by this MCP server — payment is always to a server-specified recipient (anchor-x402's treasury) for a server-specified amount ($0.001–$0.010 USDC per call). The treasury addresses are public and visible in the 402 response payload.
+The wallet **cannot** be drained to arbitrary addresses by this MCP server — payment is always to a server-specified recipient (anchor-x402's treasury) for a server-specified amount ($0.001–$0.05 USDC per call). The treasury addresses are public and visible in the 402 response payload.
 
 ## Recommended hot-wallet hygiene
 
