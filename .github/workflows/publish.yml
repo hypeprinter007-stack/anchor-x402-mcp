@@ -20,7 +20,9 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Upgrade npm (Trusted Publishing requires npm >= 11.5.1)
-        run: npm install -g npm@latest
+        # Pin to the 11 line: >= 11.5.1 for Trusted Publishing, and still
+        # supports Node 20. `npm@latest` (now 12.x) dropped Node 20 → EBADENGINE.
+        run: npm install -g npm@11
 
       - name: Verify tag matches package.json version
         run: |
