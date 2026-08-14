@@ -21,6 +21,8 @@
  * ANCHOR_WALLET_PRIVATE_KEY is unset, tool calls return a helpful 402
  * message explaining how to fund + retry.
  */
+import { readFileSync } from "node:fs";
+
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
@@ -30,6 +32,10 @@ import {
 import { wrapFetchWithPaymentFromConfig } from "@x402/fetch";
 import { ExactEvmScheme } from "@x402/evm";
 import { privateKeyToAccount } from "viem/accounts";
+
+// Single source of truth: read the version from package.json (shipped in the
+// npm tarball) so the MCP runtime identity can never drift from the package.
+const VERSION = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8")).version;
 
 const BASE_URL = process.env.ANCHOR_API_URL || "https://api.anchor-x402.com";
 const PRIVATE_KEY = process.env.ANCHOR_WALLET_PRIVATE_KEY || "";
@@ -64,7 +70,7 @@ if (PRIVATE_KEY) {
 }
 
 const server = new Server(
-  { name: "anchor-x402", version: "0.2.1" },
+  { name: "anchor-x402", version: VERSION },
   { capabilities: { tools: {} } }
 );
 
