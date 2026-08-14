@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node index.js",
     "check:versions": "node scripts/check-versions.mjs",
-    "test": "node scripts/check-versions.mjs && node --test test/protocol.mjs"
+    "test": "node scripts/check-versions.mjs && node --test test/protocol.mjs test/redaction.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
