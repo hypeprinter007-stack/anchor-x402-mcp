@@ -36,6 +36,8 @@ It signs USDC payment authorizations to **anchor-x402's known treasury addresses
 
 The wallet **cannot** be drained to arbitrary addresses by this MCP server — payment is always to a server-specified recipient (anchor-x402's treasury) for a server-specified amount ($0.001–$0.05 USDC per call). The treasury addresses are public and visible in the 402 response payload.
 
+**This guarantee is enforced in code, not just documented** (`payment-guard.mjs`, since v0.2.4). The payment client is constructed with an x402 policy that filters every 402's payment requirements to: `payTo` in the treasury allowlist, amount ≤ $0.05 (50000 atomic), and validity window ≤ 600s — and the fetch uses `redirect: "error"`. A 402 requesting any other recipient, a larger amount, a longer window, or arriving via a redirect is filtered out, and the call **fails closed** (no authorization is signed) rather than paying. Reaching an unenforced state would require an attacker-controlled response on `api.anchor-x402.com` or a user-set `ANCHOR_API_URL`; the policy holds even then. Regression-tested in `test/payment-guard.mjs`. Reported by Mehdi Kerimov (2026-09).
+
 ## Recommended hot-wallet hygiene
 
 Treat the wallet you put in `ANCHOR_WALLET_PRIVATE_KEY` like a **hot wallet**:

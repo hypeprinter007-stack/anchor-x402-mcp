@@ -32,6 +32,7 @@ import {
 import { wrapFetchWithPaymentFromConfig } from "@x402/fetch";
 import { ExactEvmScheme } from "@x402/evm";
 import { privateKeyToAccount } from "viem/accounts";
+import { treasuryPolicy } from "./payment-guard.mjs";
 
 // Single source of truth: read the version from package.json (shipped in the
 // npm tarball) so the MCP runtime identity can never drift from the package.
@@ -53,6 +54,9 @@ if (PRIVATE_KEY) {
     );
     paidFetch = wrapFetchWithPaymentFromConfig(fetch, {
       schemes: [{ network: "eip155:8453", client: new ExactEvmScheme(account) }],
+      // Enforce the SECURITY.md guarantee in code: only ever sign to anchor's
+      // treasury, ≤ $0.05, with a bounded window. See payment-guard.mjs.
+      policies: [treasuryPolicy],
     });
     paymentEnabled = true;
     console.error(
@@ -430,7 +434,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   }
 
   try {
-    const res = await paidFetch(req.url, req.opts);
+    // redirect: "error" — a 3xx from the configured base URL must NOT carry a
+    // signed payment to a redirect target (closes the open-redirect vector).
+    const res = await paidFetch(req.url, { ...req.opts, redirect: "error" });
 
     if (res.status === 402) {
       const body = await res.text().catch(() => "");
