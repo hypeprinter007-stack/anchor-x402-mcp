@@ -47,14 +47,9 @@ Treat the wallet you put in `ANCHOR_WALLET_PRIVATE_KEY` like a **hot wallet**:
 - The agent decides when to call tools; it can rack up calls quickly. Set a personal budget and watch your wallet balance
 - Rotate the key if you suspect compromise (generate a new wallet, sweep the old one)
 
-## Bug bounty
+## Recognition
 
-Out-of-pocket bounties for confirmed:
-
-- Path that signs payments to a non-anchor-x402 recipient (private-key misuse)
-- npm-package-level supply-chain compromise affecting installed users
-
-Bounty range: case-by-case, generally **$50–$500 USDC** for critical reports.
+We credit good-faith researchers in the release notes and a public security advisory (or keep it anonymous — your call). This project does **not** offer a monetary bug bounty.
 
 ## Disclosure procedure
 
